@@ -1,0 +1,36 @@
+services:
+  budget:
+    build: .
+    image: budget-app
+    container_name: budget
+    restart: unless-stopped
+    ports:
+      # Reachable from other devices on your network (e.g. your phone).
+      # Use "127.0.0.1:8080:8000" instead to allow only this computer.
+      - "8080:8000"
+    environment:
+      # Your time zone. It decides when "today" starts and when the daily digest goes out.
+      TZ: America/New_York
+
+      # ---- Optional: daily digest of anything that needs attention -------------
+      # Sent once a day at NOTIFY_TIME, only on days when something needs you.
+      # NOTIFY_TIME: "08:00"
+      # APP_URL: "http://192.168.1.50:8080"   # link included in the message
+
+      # Push notifications through ntfy (https://ntfy.sh, or your own ntfy server).
+      # Install the ntfy app and subscribe to the same topic. Use a long, random topic name.
+      # NTFY_URL: "https://ntfy.sh/budget-change-me-to-something-random"
+      # NTFY_TOKEN: ""                         # only for protected topics
+
+      # Email through any SMTP server (e.g. Gmail with an app password).
+      # SMTP_HOST: "smtp.gmail.com"
+      # SMTP_PORT: "587"                       # 465 = SSL, otherwise STARTTLS
+      # SMTP_USER: "you@gmail.com"
+      # SMTP_PASSWORD: "your-app-password"
+      # SMTP_FROM: "you@gmail.com"
+      # SMTP_TO: "you@gmail.com"
+    volumes:
+      - budget-data:/data
+
+volumes:
+  budget-data:
